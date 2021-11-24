@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.websitetracker.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.example.websitetracker.rating.RatingFragment"
+        android:label="RatingFragment"
+        tools:layout="@layout/fragment_rating">
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_ratingFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/searchFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

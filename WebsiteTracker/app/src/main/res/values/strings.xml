@@ -3,4 +3,9 @@
     <string name="tutorial_message">Use me every time you want to google something!</string>
     <string name="search_hint">Search or type web address</string>
     <string name="search_button">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="clean_button">Clean history</string>
+    <string name="rate_button">OK</string>
+    <string name="rate_message">Please give a rating to the following website\n%s</string>
 </resources>
