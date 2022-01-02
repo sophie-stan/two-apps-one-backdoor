@@ -1,6 +1,7 @@
 package com.example.websitetracker.search
 
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.*
 import com.example.websitetracker.database.Search
 import com.example.websitetracker.database.SearchDao
@@ -19,32 +20,34 @@ class SearchViewModel(private val searchDao: SearchDao) : ViewModel() {
     private var _liveInput = MutableLiveData<String>()
     val liveInput: LiveData<String> = _liveInput
 
+    private val url: LiveData<String> = liveInput.map {
+        it.removeWhitespace()
+            .lowercase()
+            .addStartUrl()
+    }
+    val isValidUrl: LiveData<Boolean> = url.map {
+        Log.d("SearchViewModel", "Transformations.map")
+        Patterns.WEB_URL.matcher(it).matches()
+    }
+
     private var _showSuccessfulClean = MutableLiveData<Boolean>()
     val showSuccessfulClean: LiveData<Boolean> = _showSuccessfulClean
 
-    // TODO: disable Search button while url is not valid
-
     fun onSearch() {
         Log.i("SearchViewModel", "User entered ${_liveInput.value}")
-
-        // Transform user input into a correct url.
-        val url = _liveInput.value
-            .toString()
-            .lowercase()
-            .let { input ->
-                if (input.startsWith(SearchFragment.START_URL)) input
-                else SearchFragment.START_URL.plus(input)
-            }
+        Log.d("SearchViewModel", "isValidUrl: ${isValidUrl.value}")
 
         // Check if there is a previous rating for this website.
         viewModelScope.launch {
-            searchDao.get(url).let {
-                if (it != null) {
-                    _searchRatingToShow.value = it
-                } else {
-                    Log.i("SearchViewModel", "First time query for $url")
-                    searchDao.insert(Search(url))
-                    _urlToSearch.value = url
+            url.value?.let { url ->
+                searchDao.get(url).let {
+                    if (it != null) {
+                        _searchRatingToShow.value = it
+                    } else {
+                        Log.i("SearchViewModel", "First time query for $url")
+                        searchDao.insert(Search(url))
+                        _urlToSearch.value = url
+                    }
                 }
             }
         }

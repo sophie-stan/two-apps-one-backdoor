@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">WebsiteTracker</string>
-    <string name="tutorial_message">Use me every time you want to google something!</string>
+    <string name="tutorial_message">One, visit a website…\nTwo, rate it…\nThree, be warned next time you visit it!</string>
     <string name="search_hint">Search or type web address</string>
     <string name="search_button">Search</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="clean_button">Clean history</string>
     <string name="rate_button">OK</string>
-    <string name="rate_message">Please give a rating to the following website\n%s</string>
+    <string name="rate_message">Rate your experience with\n%s</string>
 </resources>

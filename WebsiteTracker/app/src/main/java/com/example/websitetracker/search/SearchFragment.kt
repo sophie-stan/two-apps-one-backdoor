@@ -43,19 +43,24 @@ class SearchFragment : Fragment() {
         val dataSource = AppDatabase.getInstance(application).searchDao
         viewModel =
             ViewModelProvider(this, SearchViewModelFactory(dataSource))[SearchViewModel::class.java]
+
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
-        viewModel.urlToSearch.observe(viewLifecycleOwner, { startSearch(it) })
+        viewModel.apply {
 
-        viewModel.searchRatingToShow.observe(viewLifecycleOwner, { showGivenRating(it) })
+            urlToSearch.observe(viewLifecycleOwner, { startSearch(it) })
 
-        viewModel.lastSearch.observe(viewLifecycleOwner, {
-            if (it != null && it.rating == null) {
-                navigateToRating(it.url)
-            }
-        })
+            searchRatingToShow.observe(viewLifecycleOwner, { showGivenRating(it) })
 
-        viewModel.showSuccessfulClean.observe(viewLifecycleOwner, { if (it) showSuccessfulClean() })
+            lastSearch.observe(viewLifecycleOwner, {
+                if (it != null && it.rating == null) {
+                    navigateToRating(it.url)
+                }
+            })
+
+            showSuccessfulClean.observe(viewLifecycleOwner, { if (it) showSuccessfulClean() })
+        }
 
         return binding.root
     }
@@ -63,7 +68,7 @@ class SearchFragment : Fragment() {
     private fun showGivenRating(search: Search) {
         Log.i("SearchFragment", "Show last Rating")
 
-         activity?.let {
+        activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setTitle("Continue?")
