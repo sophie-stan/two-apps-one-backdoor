@@ -22,12 +22,15 @@ class SearchViewModel(private val searchDao: SearchDao) : ViewModel() {
     private var _showSuccessfulClean = MutableLiveData<Boolean>()
     val showSuccessfulClean: LiveData<Boolean> = _showSuccessfulClean
 
+    // TODO: disable Search button while url is not valid
+
     fun onSearch() {
         Log.i("SearchViewModel", "User entered ${_liveInput.value}")
 
         // Transform user input into a correct url.
         val url = _liveInput.value
             .toString()
+            .lowercase()
             .let { input ->
                 if (input.startsWith(SearchFragment.START_URL)) input
                 else SearchFragment.START_URL.plus(input)

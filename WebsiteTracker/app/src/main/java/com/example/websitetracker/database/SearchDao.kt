@@ -11,8 +11,6 @@ import androidx.room.*
 
 @Dao
 interface SearchDao {
-    @Query("SELECT * FROM search")
-    suspend fun getAll(): List<Search>
 
     @Query("SELECT * FROM search WHERE ts IN (SELECT MAX(search.ts) FROM search)")
     fun getLast(): LiveData<Search?>

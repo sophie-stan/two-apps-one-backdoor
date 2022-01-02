@@ -22,7 +22,7 @@ import com.example.websitetracker.databinding.FragmentSearchBinding
 class SearchFragment : Fragment() {
 
     companion object {
-        const val START_URL = "https://www."
+        const val START_URL = "https://"
     }
 
     private lateinit var viewModel: SearchViewModel
