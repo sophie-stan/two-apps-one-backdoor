@@ -11,11 +11,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone.*
 import android.provider.Settings
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.contacts.model.Contact
+import com.example.contacts.model.ContactDao
+import com.example.contacts.model.ContactDatabase
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_READ_CONTACTS = 79
     }
+
+    private lateinit var contactDao: ContactDao
 
     private val positiveButtonClick = { _: DialogInterface, _: Int ->
         val intent = Intent(
@@ -38,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        contactDao = ContactDatabase.getDatabase(applicationContext).contactDao()
     }
 
     override fun onStart() {
@@ -95,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 val id = cursor.getString(cursor.getColumnIndex(CONTACT_ID))
                 val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
                 val hasPhoneNumber = cursor.getInt(cursor.getColumnIndex(HAS_PHONE_NUMBER))
-                val phoneNumbers = ArrayList<String>()
+                var phoneNumbers = ""
 
                 // Retrieve the phone numbers from provider.
                 if (hasPhoneNumber > 0) {
@@ -110,15 +116,18 @@ class MainActivity : AppCompatActivity() {
                     while (!phoneCursor.isAfterLast) {
                         val phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER))
                             .removeWhitespace()
-                        phoneNumbers.add(phoneNumber)
+                        phoneNumbers += "-|-$phoneNumber"
                         phoneCursor.moveToNext()
                     }
                     phoneCursor.close()
                 }
 
-                val contact = Contact(name, phoneNumbers)
+                val contact = Contact("0", name, phoneNumbers)
+
                 if (!data.contains(contact)) {
                     data.add(contact)
+                    //TODO make ViewModel to insert contact
+                    //contactDao.insert(contact)
                     //TODO remove
                     data.add(contact)
                     data.add(contact)
@@ -130,6 +139,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onShowContact(view: android.view.View) {
         val contact = findContactOrNull((view as TextView).text.toString())
+
         startActivity(
             Intent(this, ContactDetail::class.java)
                 .putExtra("contact", contact as Serializable)

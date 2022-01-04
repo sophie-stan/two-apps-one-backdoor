@@ -1,8 +1,12 @@
 package com.example.contacts.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
+@Entity
 data class Contact(
-    var name: String,
-    var numbers: ArrayList<String>,
+    @PrimaryKey val id:String,
+    val name: String,
+    val numbers: String,
 ) : Serializable

@@ -27,6 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".provider.ContactContentProvider"
+            android:authorities="com.example.contacts.provider.ContactContentProvider"
+            android:exported="true"/>
+
+
     </application>
 
 </manifest>
