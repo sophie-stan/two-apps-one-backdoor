@@ -6,6 +6,7 @@
     <color name="pink_200">#ffcdd2</color>
     <color name="pink_700">#cb9ca1</color>
     <color name="black">#FF000000</color>
+    <color name="lighterBlack">#1A1919</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lightGrey">#DCDCDC</color>
+    <color name="lightGrey">#F2F2F2</color>
 </resources>

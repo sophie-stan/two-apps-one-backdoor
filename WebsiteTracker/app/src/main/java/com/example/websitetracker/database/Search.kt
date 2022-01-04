@@ -20,7 +20,6 @@ data class Search(
 ) {
 
     override fun toString(): String {
-
         val readableDate = SimpleDateFormat("MM/dd/yyyy, hh:mm a", Locale.FRANCE).format(Date(ts))
         return "$url\n" +
                 "Last visit: $readableDate\n" +

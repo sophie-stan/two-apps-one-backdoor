@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorOnPrimary"
     android:orientation="vertical"
     android:padding="8dp"
     tools:context=".AddContact">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
@@ -37,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -50,10 +51,10 @@
                 <EditText
                     android:id="@+id/new_contact_name"
                     android:layout_width="match_parent"
-                    android:padding="8dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/name_field"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:padding="8dp" />
 
             </LinearLayout>
 
@@ -61,7 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -74,23 +76,26 @@
                 <EditText
                     android:id="@+id/new_contact_number"
                     android:layout_width="match_parent"
-                    android:padding="8dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/number_field"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:padding="8dp" />
 
             </LinearLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonSave"
-                android:padding="10dp"
-                android:layout_width="match_parent"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
                 android:onClick="addContact"
+                android:padding="10dp"
                 android:text="@string/submit_new_contact" />
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

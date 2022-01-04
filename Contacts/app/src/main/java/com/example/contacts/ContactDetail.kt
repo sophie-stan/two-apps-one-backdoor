@@ -18,7 +18,7 @@ class ContactDetail : AppCompatActivity() {
         if (contact != null) {
             contactName.text = contact.name
             val arrayAdapter =
-                ArrayAdapter(this, android.R.layout.simple_list_item_1, contact.numbers)
+                ArrayAdapter(this, android.R.layout.simple_selectable_list_item, contact.numbers)
             findViewById<ListView>(R.id.contact_numbers).adapter = arrayAdapter
         }
     }

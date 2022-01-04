@@ -16,11 +16,12 @@
         android:onClick="onShowContact"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorPrimary"
         android:textSize="16sp"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
         app:drawableLeftCompat="@mipmap/ic_launcher"
+        tools:text="John Doe"
         tools:ignore="UsingOnClickInXml" />
 
 </LinearLayout>
