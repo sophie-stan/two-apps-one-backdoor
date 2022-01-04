@@ -12,12 +12,15 @@ import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone.*
 import android.provider.Settings
 import android.widget.TextView
+import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.contacts.model.Contact
 import com.example.contacts.model.ContactDao
 import com.example.contacts.model.ContactDatabase
+import kotlinx.coroutines.launch
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        contactDao = ContactDatabase.getDatabase(applicationContext).contactDao()
+        contactDao = ContactDatabase.getDatabase(applicationContext).contactDao
     }
 
     override fun onStart() {
@@ -125,10 +128,9 @@ class MainActivity : AppCompatActivity() {
 
                 if (!data.contains(contact)) {
                     data.add(contact)
-                    //TODO make ViewModel to insert contact
-                    //contactDao.insert(contact)
-                    //TODO remove
-                    data.add(contact)
+                    lifecycleScope.launch {
+                        contactDao.insert(contact)
+                    }
                     data.add(contact)
                 }
             }

@@ -7,9 +7,10 @@ import androidx.room.RoomDatabase
 
 private const val DBNAME = "contact_database"
 
-@Database(entities = [Contact::class], version = 1)
+@Database(entities = [Contact::class], version = 1, exportSchema = false)
 abstract class ContactDatabase : RoomDatabase() {
-    abstract fun contactDao(): ContactDao
+
+    abstract val contactDao: ContactDao
 
     companion object {
         @Volatile

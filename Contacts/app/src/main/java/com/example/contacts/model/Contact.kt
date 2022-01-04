@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity
+@Entity(tableName = "contact")
 data class Contact(
     @PrimaryKey val id: String,
     val name: String,

@@ -15,7 +15,7 @@ interface ContactDao {
     fun findByName(name: String): Contact
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(contact: Contact): Long
+    suspend fun insert(contact: Contact): Long
 
     @Insert
     fun insertAll(vararg contacts: Contact)

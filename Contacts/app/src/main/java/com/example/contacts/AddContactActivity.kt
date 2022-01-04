@@ -11,6 +11,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.ContactsContract.CommonDataKinds
+import android.provider.ContactsContract.CommonDataKinds.*
+import android.provider.ContactsContract.Data.*
 import android.provider.Settings
 import android.view.View
 import android.widget.EditText
@@ -67,7 +70,7 @@ class AddContactActivity : AppCompatActivity() {
         val contactNumber: EditText = findViewById(R.id.new_contact_number)
         val name: String = contactName.text.toString()
         val phone = contactNumber.text.toString()
-        val addContactsUri: Uri = ContactsContract.Data.CONTENT_URI
+        val addContactsUri: Uri = CONTENT_URI
 
         // Add an empty contact and get the generated id.
         val rowContactId: Long = getRawContactId()
@@ -81,7 +84,6 @@ class AddContactActivity : AppCompatActivity() {
             "$name was added successfully!",
             Toast.LENGTH_LONG
         ).show()
-
 
         startActivity(Intent(this, MainActivity::class.java))
     }
@@ -106,13 +108,13 @@ class AddContactActivity : AppCompatActivity() {
     ) {
         // Create a ContentValues object.
         val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+        contentValues.put(RAW_CONTACT_ID, rawContactId)
         contentValues.put(
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE
+            MIMETYPE,
+            StructuredName.CONTENT_ITEM_TYPE
         )
         // Put name
-        contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName)
+        contentValues.put(StructuredName.GIVEN_NAME, displayName)
         contentResolver.insert(addContactsUri, contentValues)
     }
 
@@ -123,13 +125,13 @@ class AddContactActivity : AppCompatActivity() {
     ) {
         // Create a ContentValues object.
         val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+        contentValues.put(RAW_CONTACT_ID, rawContactId)
         contentValues.put(
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
+            MIMETYPE,
+            Phone.CONTENT_ITEM_TYPE
         )
         // Put phone number value.
-        contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
+        contentValues.put(Phone.NUMBER, phoneNumber)
         // Insert new contact data into phone contact list.
         contentResolver.insert(addContactsUri, contentValues)
     }

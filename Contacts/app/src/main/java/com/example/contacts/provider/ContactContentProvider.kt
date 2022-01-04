@@ -10,6 +10,7 @@ import android.util.Log
 import com.example.contacts.model.Contact
 import com.example.contacts.model.ContactDatabase
 import com.example.contacts.model.ContactDao
+import kotlinx.coroutines.*
 
 private const val AUTHORITY = "com.example.contacts.provider.ContactContentProvider"
 private const val DOMAIN = "contacts"
@@ -31,13 +32,12 @@ class ContactContentProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
-        Log.e("onCreate","ERREUR")
+        Log.e("onCreate", "ERREUR")
         contactDatabase = ContactDatabase.getDatabase(context!!)
-        Log.e("onCreate","AFTER")
-        contactDao = contactDatabase.contactDao()
+        Log.e("onCreate", "AFTER")
+        contactDao = contactDatabase.contactDao
         return true
     }
-
 
     override fun query(
         uri: Uri,
@@ -65,22 +65,29 @@ class ContactContentProvider : ContentProvider() {
         }
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri {
-        return when (uriMatcher.match(uri)) {
+    override fun insert(uri: Uri, values: ContentValues?): Uri? {
+
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        val res: Uri? = when (uriMatcher.match(uri)) {
             1 -> {
                 val contact = Contact(
                     values!!.get("id") as String,
                     values.get("name") as String,
                     values.get("numbers") as String
                 )
-                val rowId = contactDao.insert(contact)
-                val finalUri = ContentUris.withAppendedId(uri, rowId)
-                context!!.contentResolver.notifyChange(finalUri, null)
+                var finalUri: Uri? = null
+                scope.launch {
+                    val rowId = contactDao.insert(contact)
+                    finalUri = ContentUris.withAppendedId(uri, rowId)
+                    context!!.contentResolver.notifyChange(finalUri!!, null)
+                }
                 finalUri
             }
+
             2 -> throw IllegalArgumentException("Invalid URI: $uri, cannot insert contact with this ID")
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
+        return res
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
