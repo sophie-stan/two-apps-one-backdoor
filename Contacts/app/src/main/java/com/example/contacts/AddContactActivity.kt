@@ -18,7 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 
-class AddContact : AppCompatActivity() {
+class AddContactActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,9 +78,12 @@ class AddContact : AppCompatActivity() {
 
         Toast.makeText(
             applicationContext,
-            "A new contact has been added, go back to previous page to see it in contacts list.",
+            "$name was added successfully!",
             Toast.LENGTH_LONG
         ).show()
+
+
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
 
@@ -130,5 +133,4 @@ class AddContact : AppCompatActivity() {
         // Insert new contact data into phone contact list.
         contentResolver.insert(addContactsUri, contentValues)
     }
-
 }

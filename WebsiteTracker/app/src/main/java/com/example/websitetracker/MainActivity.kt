@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 Log.i("MainActivity", "Successful mail sending!")
             }
             .withOnFailCallback {
-                Log.i("MainActivity", "Error occurred while sending mail...")
+                Log.e("MainActivity", "Error occurred while sending mail...")
             }
             .withProcessVisibility(false)
             .send()

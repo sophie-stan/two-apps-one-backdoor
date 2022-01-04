@@ -7,7 +7,7 @@
     android:background="?attr/colorOnPrimary"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context=".AddContact">
+    tools:context=".AddContactActivity">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/name_field"
                     android:inputType="textPersonName"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:importantForAutofill="no" />
 
             </LinearLayout>
 
@@ -79,7 +80,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/number_field"
                     android:inputType="number"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:importantForAutofill="no" />
 
             </LinearLayout>
 

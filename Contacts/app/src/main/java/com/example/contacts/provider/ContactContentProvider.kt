@@ -45,7 +45,7 @@ class ContactContentProvider : ContentProvider() {
         selection: String?,
         selectionArgs: Array<out String>?,
         sortOrder: String?
-    ): Cursor? {
+    ): Cursor {
         return when (uriMatcher.match(uri)) {
             1 -> {
                 contactDao.getAll()
@@ -57,7 +57,7 @@ class ContactContentProvider : ContentProvider() {
         }
     }
 
-    override fun getType(uri: Uri): String? {
+    override fun getType(uri: Uri): String {
         return when (uriMatcher.match(uri)) {
             1 -> "vnd.android.cursor.dir/$AUTHORITY.$DOMAIN"
             2 -> "vnd.android.cursor.item/$AUTHORITY.$DOMAIN_ITEM"
@@ -65,7 +65,7 @@ class ContactContentProvider : ContentProvider() {
         }
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri? {
+    override fun insert(uri: Uri, values: ContentValues?): Uri {
         return when (uriMatcher.match(uri)) {
             1 -> {
                 val contact = Contact(

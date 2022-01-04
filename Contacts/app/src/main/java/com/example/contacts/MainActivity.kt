@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone.*
 import android.provider.Settings
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -153,7 +152,7 @@ class MainActivity : AppCompatActivity() {
 
     fun newContact(view: android.view.View) {
         startActivity(
-            Intent(this, AddContact::class.java)
+            Intent(this, AddContactActivity::class.java)
         )
     }
 }

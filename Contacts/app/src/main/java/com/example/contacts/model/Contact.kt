@@ -6,7 +6,7 @@ import java.io.Serializable
 
 @Entity
 data class Contact(
-    @PrimaryKey val id:String,
+    @PrimaryKey val id: String,
     val name: String,
     val numbers: String,
 ) : Serializable
