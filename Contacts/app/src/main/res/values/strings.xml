@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Contacts</string>
+    <string name="add_contact">Add a contact</string>
+    <string name="new_contact">New contact</string>
+    <string name="name_field">Name</string>
+    <string name="number_field">Phone number</string>
+    <string name="submit_new_contact">Save contact</string>
 </resources>

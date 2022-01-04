@@ -119,6 +119,9 @@ class MainActivity : AppCompatActivity() {
                 val contact = Contact(name, phoneNumbers)
                 if (!data.contains(contact)) {
                     data.add(contact)
+                    //TODO remove
+                    data.add(contact)
+                    data.add(contact)
                 }
             }
             cursor.close()
@@ -137,4 +140,10 @@ class MainActivity : AppCompatActivity() {
         data.asSequence()
             .filter { it.name == text }
             .firstOrNull()
+
+    fun newContact(view: android.view.View) {
+        startActivity(
+            Intent(this, AddContact::class.java)
+        )
+    }
 }
