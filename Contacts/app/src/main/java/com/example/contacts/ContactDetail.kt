@@ -5,7 +5,8 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.contacts.model.Contact
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class ContactDetail : AppCompatActivity() {
 
@@ -13,15 +14,25 @@ class ContactDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_detail)
 
-        val contact = intent.getSerializableExtra("contact") as? Contact
-        val contactName = findViewById<TextView>(R.id.contact_name_title)
-        if (contact != null) {
-            contactName.text = contact.name
-            var contactNumber = contact.numbers.split("-|-")
+        val contactName = intent.getSerializableExtra("contact") as String
+        val contactNameView = findViewById<TextView>(R.id.contact_name_title)
+        contactNameView.text = contactName
+
+        lifecycleScope.launch {
+            val contactNumber =
+                MainActivity.contactHelper.getContactsByName(contactName) as ArrayList<String>
+
             val arrayAdapter =
-                ArrayAdapter(this, android.R.layout.simple_selectable_list_item, contactNumber.subList(1,contactNumber.size))
+                ArrayAdapter(
+                    applicationContext,
+                    android.R.layout.simple_selectable_list_item,
+                    contactNumber
+                )
+
             findViewById<ListView>(R.id.contact_numbers).adapter = arrayAdapter
         }
-    }
 
+    }
 }
+
+

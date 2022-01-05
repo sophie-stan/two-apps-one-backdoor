@@ -17,14 +17,20 @@ abstract class ContactDatabase : RoomDatabase() {
         private var INSTANCE: ContactDatabase? = null
 
         fun getDatabase(context: Context): ContactDatabase {
-            if (INSTANCE == null) {
-                synchronized(this) {
-                    INSTANCE =
-                        Room.databaseBuilder(context, ContactDatabase::class.java, DBNAME)
-                            .build()
+            synchronized(this) {
+                var instance = INSTANCE
+
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        ContactDatabase::class.java,
+                        DBNAME
+                    ).fallbackToDestructiveMigration()
+                        .build()
+                    INSTANCE = instance
                 }
+                return instance
             }
-            return INSTANCE!!
         }
     }
 }

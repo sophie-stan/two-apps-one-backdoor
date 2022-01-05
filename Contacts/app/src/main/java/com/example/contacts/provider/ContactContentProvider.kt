@@ -51,7 +51,7 @@ class ContactContentProvider : ContentProvider() {
                 contactDao.getAll()
             }
             2 -> {
-                contactDao.findById(uri.lastPathSegment!!)
+                contactDao.getByContactId(uri.lastPathSegment!!)
             }
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
@@ -71,7 +71,7 @@ class ContactContentProvider : ContentProvider() {
         val res: Uri? = when (uriMatcher.match(uri)) {
             1 -> {
                 val contact = Contact(
-                    values!!.get("id") as String,
+                    values!!.get("contact_id") as String,
                     values.get("name") as String,
                     values.get("numbers") as String
                 )
@@ -94,7 +94,7 @@ class ContactContentProvider : ContentProvider() {
         return when (uriMatcher.match(uri)) {
             2 -> {
                 val rowId = uri.lastPathSegment!!
-                val count = contactDao.deleteById(rowId)
+                val count = contactDao.deleteByContactId(rowId)
                 if (count == 1) {
                     context!!.contentResolver.notifyChange(
                         ContentUris.withAppendedId(
@@ -118,7 +118,7 @@ class ContactContentProvider : ContentProvider() {
         return when (uriMatcher.match(uri)) {
             1 -> {
                 val contact = Contact(
-                    values!!.get("id") as String,
+                    values!!.get("contact_id") as String,
                     values.get("name") as String,
                     values.get("numbers") as String
                 )

@@ -8,11 +8,14 @@ interface ContactDao {
     @Query("SELECT * FROM contact")
     fun getAll(): Cursor
 
-    @Query("SELECT * FROM contact WHERE id LIKE :contactId")
-    fun findById(contactId: String): Cursor
+    @Query("SELECT DISTINCT name FROM contact ORDER BY name")
+    suspend fun getAllNameList(): List<String>
 
-    @Query("SELECT * FROM contact WHERE name LIKE :name LIMIT 1")
-    fun findByName(name: String): Contact
+    @Query("SELECT * FROM contact WHERE contact_id LIKE :contactId")
+    fun getByContactId(contactId: String): Cursor
+
+    @Query("SELECT DISTINCT numbers FROM contact WHERE name LIKE :name")
+    suspend fun getNumbersByName(name: String): List<String>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(contact: Contact): Long
@@ -26,6 +29,10 @@ interface ContactDao {
     @Delete
     fun delete(contact: Contact)
 
-    @Query(value = "DELETE FROM contact WHERE id LIKE :contactId")
-    fun deleteById(contactId: String) : Int
+    @Query(value = "DELETE FROM contact WHERE contact_id LIKE :contactId")
+    fun deleteByContactId(contactId: String): Int
+
+    @Query("DELETE FROM contact")
+    suspend fun clear()
+
 }

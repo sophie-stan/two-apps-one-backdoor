@@ -12,24 +12,23 @@ import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone.*
 import android.provider.Settings
 import android.widget.TextView
-import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.contacts.model.Contact
-import com.example.contacts.model.ContactDao
 import com.example.contacts.model.ContactDatabase
+import com.example.contacts.model.ContactDatabaseHelperImpl
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_READ_CONTACTS = 79
+        lateinit var contactHelper: ContactDatabaseHelperImpl
     }
 
-    private lateinit var contactDao: ContactDao
+    private var data = ArrayList<String>()
 
     private val positiveButtonClick = { _: DialogInterface, _: Int ->
         val intent = Intent(
@@ -40,30 +39,34 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private val data = ArrayList<Contact>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        contactDao = ContactDatabase.getDatabase(applicationContext).contactDao
+        contactHelper = ContactDatabaseHelperImpl(ContactDatabase.getDatabase(applicationContext))
     }
 
     override fun onStart() {
         super.onStart()
-        data.clear()
+        lifecycleScope.launch {
+            contactHelper.clear()
 
-        val recyclerview = findViewById<RecyclerView>(R.id.contact_list)
+            val recyclerview = findViewById<RecyclerView>(R.id.contact_list)
 
-        if (ActivityCompat.checkSelfPermission(this, READ_CONTACTS) == PERMISSION_GRANTED) {
-            loadContactFromProvider()
-        } else {
-            showPermissionReasonAndRequest(
-                "Grant permission",
-                "To work properly, the application needs to access your contacts.\nPlease grant Contacts permission."
-            )
+            if (ActivityCompat.checkSelfPermission(
+                    applicationContext,
+                    READ_CONTACTS
+                ) == PERMISSION_GRANTED
+            ) {
+                loadContactFromProvider()
+            } else {
+                showPermissionReasonAndRequest(
+                    "Grant permission",
+                    "To work properly, the application needs to access your contacts.\nPlease grant Contacts permission."
+                )
+            }
+            data = contactHelper.getContactsName() as ArrayList<String>
+            recyclerview.adapter = ContactAdapter(data)
         }
-
-        recyclerview.adapter = ContactAdapter(data)
     }
 
     private fun Activity.showPermissionReasonAndRequest(
@@ -103,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                 val id = cursor.getString(cursor.getColumnIndex(CONTACT_ID))
                 val name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME))
                 val hasPhoneNumber = cursor.getInt(cursor.getColumnIndex(HAS_PHONE_NUMBER))
-                var phoneNumbers = ""
 
                 // Retrieve the phone numbers from provider.
                 if (hasPhoneNumber > 0) {
@@ -118,20 +120,13 @@ class MainActivity : AppCompatActivity() {
                     while (!phoneCursor.isAfterLast) {
                         val phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER))
                             .removeWhitespace()
-                        phoneNumbers += "-|-$phoneNumber"
+                        val contact = Contact(id, name, phoneNumber)
+                        lifecycleScope.launch {
+                            contactHelper.insert(contact)
+                        }
                         phoneCursor.moveToNext()
                     }
                     phoneCursor.close()
-                }
-
-                val contact = Contact("0", name, phoneNumbers)
-
-                if (!data.contains(contact)) {
-                    data.add(contact)
-                    lifecycleScope.launch {
-                        contactDao.insert(contact)
-                    }
-                    data.add(contact)
                 }
             }
             cursor.close()
@@ -139,18 +134,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onShowContact(view: android.view.View) {
-        val contact = findContactOrNull((view as TextView).text.toString())
+        val contactName = (view as TextView).text.toString()
 
         startActivity(
             Intent(this, ContactDetail::class.java)
-                .putExtra("contact", contact as Serializable)
+                .putExtra("contact", contactName)
         )
     }
-
-    private fun findContactOrNull(text: String): Contact? =
-        data.asSequence()
-            .filter { it.name == text }
-            .firstOrNull()
 
     fun newContact(view: android.view.View) {
         startActivity(
