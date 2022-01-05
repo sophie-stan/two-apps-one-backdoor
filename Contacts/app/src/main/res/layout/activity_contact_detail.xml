@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="?attr/colorOnPrimary"
     android:paddingHorizontal="10dp"
-    tools:context=".ContactDetail">
+    tools:context=".ContactDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"
+            tools:ignore="ContentDescription" />
 
         <TextView
         android:id="@+id/contact_name_title"

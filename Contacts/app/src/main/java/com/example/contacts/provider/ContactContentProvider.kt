@@ -8,9 +8,12 @@ import android.database.Cursor
 import android.net.Uri
 import android.util.Log
 import com.example.contacts.model.Contact
-import com.example.contacts.model.ContactDatabase
 import com.example.contacts.model.ContactDao
-import kotlinx.coroutines.*
+import com.example.contacts.model.ContactDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 private const val AUTHORITY = "com.example.contacts.provider.ContactContentProvider"
 private const val DOMAIN = "contacts"
@@ -127,7 +130,7 @@ class ContactContentProvider : ContentProvider() {
                     context!!.contentResolver.notifyChange(
                         ContentUris.withAppendedId(
                             uri,
-                            contact.id.toLong()
+                            contact.id
                         ), null
                     )
                 }

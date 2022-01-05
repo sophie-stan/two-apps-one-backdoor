@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
         val contactName = (view as TextView).text.toString()
 
         startActivity(
-            Intent(this, ContactDetail::class.java)
+            Intent(this, ContactDetailActivity::class.java)
                 .putExtra("contact", contactName)
         )
     }
