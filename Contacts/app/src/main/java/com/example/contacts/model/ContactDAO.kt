@@ -20,9 +20,6 @@ interface ContactDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(contact: Contact): Long
 
-    @Insert
-    fun insertAll(vararg contacts: Contact)
-
     @Update
     fun update(contact: Contact): Int
 

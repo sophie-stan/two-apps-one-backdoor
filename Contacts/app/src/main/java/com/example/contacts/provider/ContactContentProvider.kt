@@ -35,9 +35,7 @@ class ContactContentProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
-        Log.e("onCreate", "ERREUR")
         contactDatabase = ContactDatabase.getDatabase(context!!)
-        Log.e("onCreate", "AFTER")
         contactDao = contactDatabase.contactDao
         return true
     }
@@ -69,7 +67,6 @@ class ContactContentProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         val res: Uri? = when (uriMatcher.match(uri)) {
             1 -> {
@@ -86,7 +83,6 @@ class ContactContentProvider : ContentProvider() {
                 }
                 finalUri
             }
-
             2 -> throw IllegalArgumentException("Invalid URI: $uri, cannot insert contact with this ID")
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
@@ -130,7 +126,7 @@ class ContactContentProvider : ContentProvider() {
                     context!!.contentResolver.notifyChange(
                         ContentUris.withAppendedId(
                             uri,
-                            contact.id
+                            contact.contactId.toLong()
                         ), null
                     )
                 }

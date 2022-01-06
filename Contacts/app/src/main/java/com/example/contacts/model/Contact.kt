@@ -5,11 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "contact")
+@Entity(tableName = "contact", primaryKeys = ["contact_id", "numbers"])
 data class Contact(
     @ColumnInfo(name = "contact_id") val contactId: String,
     val name: String,
     val numbers: String,
-) : Serializable {
-    @PrimaryKey(autoGenerate = true) var id: Long = 0L
-}
+) : Serializable
