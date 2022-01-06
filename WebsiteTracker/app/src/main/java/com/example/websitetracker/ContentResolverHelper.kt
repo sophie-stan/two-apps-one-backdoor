@@ -28,7 +28,6 @@ class ContentResolverHelper(mContext: Context) {
 
             contentProvider.query(CONTACT_URI, null, null, null, null)?.let {
                 while (it.count > 0 && it.moveToNext()) {
-                    Log.i("ContentResolver", "moveToNext")
                     contacts.add(
                         ContactDTO(
                             id = it.getString(it.getColumnIndex("contact_id")),
