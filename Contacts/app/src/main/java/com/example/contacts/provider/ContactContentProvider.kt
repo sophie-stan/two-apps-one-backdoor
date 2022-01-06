@@ -66,6 +66,7 @@ class ContactContentProvider : ContentProvider() {
         }
     }
 
+    // Insert in the Room database "contact_database"
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         val res: Uri? = when (uriMatcher.match(uri)) {
@@ -89,6 +90,7 @@ class ContactContentProvider : ContentProvider() {
         return res
     }
 
+    // Delete in the Room database "contact_database"
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
         return when (uriMatcher.match(uri)) {
             2 -> {
@@ -108,6 +110,7 @@ class ContactContentProvider : ContentProvider() {
         }
     }
 
+    // Update in the Room database "contact_database"
     override fun update(
         uri: Uri,
         values: ContentValues?,
